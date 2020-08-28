@@ -1,0 +1,56 @@
+networks:
+  default:
+    driver: overlay
+services:
+  a-client:
+    image: sonic-registry:55000/a-client:1.2.3
+    ports:
+    - published: 27336
+      target: 80
+  a-services:
+    healthcheck:
+      interval: 5s
+      retries: 3
+      test:
+      - CMD-SHELL
+      - /app/health.sh
+      timeout: 5s
+    image: sonic-registry:55000/a-services:alpha-beta.1
+    ports:
+    - target: 9800
+  datastore:
+    deploy:
+      placement:
+        constraints:
+        - node.role == manager
+    image: sonic-registry:55000/datastore:production-32
+    ports:
+    - target: 1433
+  gateway:
+    environment:
+    healthcheck:
+      interval: 15s
+      retries: 3
+      start_period: 10s
+      test: node /app/health-check.js || exit 1
+      timeout: 10s
+    image: sonic-registry:55000/gateway:1.51
+    ports:
+    - target: 3010
+  redis:
+    image: redis:5.0.4
+  s-client:
+    image: sonic-registry:55000/s-client:production-13
+    ports:
+    - published: 27337
+      target: 80
+  sonja-services:
+    image: sonic-registry:55000/s-services:1.5.3
+    ports:
+    - target: 80
+version: '3.7'
+volumes:
+  export: {}
+  import: {}
+
+
