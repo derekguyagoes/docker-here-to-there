@@ -28,8 +28,8 @@ f = open("send.sh", "w")
 f.write("#!/bin/sh\n\n")
 for image in images:
     for sourceImage in sourceImages:
-        f.write('docker tag {0} {1}\n'.format(sourceImage, image))
-        f.write('docker push{0}/{1}\n\n'.format(args.destination, image))
+        f.write('docker tag {0} {1}/{2}\n'.format(sourceImage, args.destination, image))
+        f.write('docker push {0}/{1}\n\n'.format(args.destination, image))
         break
 f.close()
 
