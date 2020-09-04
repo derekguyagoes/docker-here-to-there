@@ -1,31 +1,25 @@
-# This is a basic workflow to help you get started with Actions
+name: Package Application with Pyinstaller
 
-name: Builds for Linux
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Package Application
-        uses: JackMcKew/pyinstaller-action-linux@main
-        with:
-          path: src
+    - name: Package Application
+      uses: JackMcKew/pyinstaller-action-linux@main
+      with:
+        path: src
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: name-of-artifact
-          path: src/dist/linux
+    - uses: actions/upload-artifact@v2
+      with:
+        name: name-of-artifact
+        path: src/dist/linux
