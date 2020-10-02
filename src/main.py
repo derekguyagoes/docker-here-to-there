@@ -1,5 +1,7 @@
 import argparse
 
+def line_contains_image(line):
+    return line.find("image") > -1
 
 def main():
     parser = argparse.ArgumentParser()
@@ -13,8 +15,8 @@ def main():
     sourceImages = []
 
     f = open(args.file)
-    for line in f:
-        if line.find("image") > -1:
+    for line in (line for line in f if not line.startswith('#')):
+        if line_contains_image(line):
             colon = line.find(":") + 1
             wholeline = str.strip(line[colon:])
             forwardslash = wholeline.find("/")
